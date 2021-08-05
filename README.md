@@ -23,8 +23,10 @@ NeST is a python based modular framework for consensus based variant calling. Th
 <a id="Prerequisites"></a>
 
 ## Prerequisites
-
-- Download Docker Desktop here `https://www.docker.com/get-started`
+- MACOX
+    - Download Docker Desktop here `https://www.docker.com/get-started`
+- Ubuntu
+    - https://docs.docker.com/engine/install/ubuntu/
     
 <a id="Installation"></a>
 ## Availability of code and installation:
