@@ -50,6 +50,7 @@ merge1.columns=['Gene','BasePOS', 'BaseDepth', 'Ref', 'Alt', 'AAref', 'AAalt',
        'Sample name', 'Reportable mutation with gene','Reportable mutation', 'first','Chr','Gene_y', 
        'RefAA', 'AAPos', 'AltAA']
 merge1['AAPOS']=merge1['AAPOS'].astype(str)
+merge1=merge1.reset_index()
 #merge1['Reportable mutation']=merge1['AAref']+merge1['AAPOS']+merge1['AAalt']
 merge1['Reportable mutation']=''
 for i in range(0,len(merge1)):
@@ -155,10 +156,11 @@ a=pd.merge(test3,summary,on="combine_key")[['combine_key']].drop_duplicates()
 bi=a.combine_key.unique()
 summary['flagged']=''
 for i in range(0,len(summary)):
-    if summary.combine_key[i] not in bi:
-        summary['flagged'][i]="Q1"
+    if summary.Mutation[i] != "Wildtype":
+       if summary.combine_key[i] not in bi:
+          summary['flagged'][i]="Q1"
 summary=summary.drop_duplicates()
-bi_out=summary[['Sample name','Gene', 'AAref', 'AAalt', 'AAPOS', 'VAF(DP4)',
+bi_out=summary[['Sample name','Gene', 'AAref', 'AAalt', 'AAPOS', 'VAF(DP4)', 'Mutation',
         'Drug Resistance Marker','QD', 'SOR', 'MQ','MQRankSum', 'Filter', 'FilterDescription',
         'flagged']]
 bi_out.to_csv("PowerBI_input.csv")
