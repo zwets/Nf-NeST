@@ -23,7 +23,7 @@ parser.add_argument('-cod', dest='cutoff_dir', type=str, help="cutoff files dire
 args = parser.parse_args()
 all_df=pd.DataFrame()
 dic={'ANZa':(-6.2667,14.2333),'ANLS':(-10.2592,20.6249),'ANBe':(-12.5763,13.4055),'GNMa':(9.546,-13.281),'GNHa':(11.56667,-10.05),'GNDo':(7.75833,-8.80472),'GNLS':(11.03856,-12.04793)}
-dic2={'ANBe':'Benguela','ANZa':'Zaire','ANLS':'Lunda Sul','GNLS':'Labé','GNHa':'Dabola','GNDo':'Nzérékoré','GNMa':'Forécariah Centre','ANxx':'control'}
+dic2={'ANBe':'Benguela','ANZa':'Zaire','ANLS':'Lunda Sul','GNLa':'Labé','GNHa':'Dabola','GNDo':'Nzérékoré','GNMa':'Forécariah Centre','ANxx':'control'}
 dic3={'A':'AL','B':'CQ','C':'CQ+PQ','D':'AL+PQ','E':'AL+MQ','F':'AS+AQ','G':'AS+SP','H':'AS+MQ','I':'DHA+PQ','J':'AS+SP+PQ','K':'AL+MQ+PQ','L':'Doxxycline','M':'Malarone','N':'Quinine','O':'Quinine+Doxycycline','P':'Atovaquone/Proguanil+AL','Q':'Mefloquine','R':'Vancomycin+Rocephin','S':'Malarone+Doxycycline','x':'None'}
 
 
@@ -76,7 +76,7 @@ merge1=merge1[['Gene','BasePOS', 'BaseDepth', 'Ref', 'Alt', 'AAref', 'AAalt',
 
 summary=merge1[['Sample name','Gene','Ref', 'Alt', 'AAref', 'AAalt',
        'AAPOS', 'CodonCoverage', 'VAF(DP4)','Mutation','Drug Resistance Marker','QD', 
-       'SOR', 'MQ','MQRankSum', 'Filter', 'FilterDescription','region','Treatment']]
+       'SOR', 'MQ','MQRankSum', 'Filter', 'FilterDescription','region','Treatment','Day']]
 summary.to_csv("summary.csv")
 merge1.to_csv("depth_filter_input.csv")
 
