@@ -210,10 +210,13 @@ process GenerateVCF {
     script:
         """
         $baseDir/bcftools-1.9/bcftools mpileup -f ${genome} ${bam_path} > ${sample}.mpileup
-        $baseDir/bcftools-1.9/bcftools call -vm ${sample}.mpileup > ${sample}-1.vcf
+        $baseDir/bcftools-1.9/bcftools call -vm ${sample}.mpileup  > ${sample}-1.vcf
         $baseDir/gatk-4.2.0.0/gatk HaplotypeCaller -R $baseDir/ref/pfalciparum/New_6_genes.fa -I ${bam_path} -O ${sample}-2.vcf --base-quality-score-threshold 6 --max-reads-per-alignment-start 0 --min-base-quality-score 0 --standard-min-confidence-threshold-for-calling 0 
-        freebayes -f ${genome} -F 0.01 -E 3 --report-all-haplotype-alleles ${bam_path} > ${sample}-3.vcf
+        freebayes -f ${genome} -F 0.01 -E 3 --report-all-haplotype-alleles --haplotype-length 1  ${bam_path} > ${sample}-3.vcf
+
         """
+                //freebayes -f ${genome} -F 0.01 -E 3 -t $baseDir/6genes_ver3/6genes_ver3/targe_.bed --report-all-haplotype-alleles ${bam_path} > ${sample}-3.vcf
+
 }
 
 
@@ -294,7 +297,7 @@ process filter {
 
     script:
         """
-        java -Xmx8g -jar $baseDir/tmp/snpEff/SnpSift.jar filter -f ${vcf_path1} " ( VARTYPE = 'SNP' ) " > ${sample}_filtered.vcf
+        java -Xmx8g -jar $baseDir/tmp/snpEff/SnpSift.jar filter -f ${vcf_path1} " ( VARTYPE = 'SNP'  ) " > ${sample}_filtered.vcf
         """
 }
 
