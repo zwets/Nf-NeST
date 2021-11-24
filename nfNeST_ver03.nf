@@ -18,7 +18,7 @@ CTexcelpath="$baseDir/ANG_2019_TES_master.xlsx"
 datasettype = "$params.input.datasettype"
 configfiles="$baseDir/6genes_ver3"
 pyscripts="$baseDir/pyscripts"
-snpfilter_scripts="$baseDir/pyscript"
+//snpfilter_scripts="$baseDir/pyscript"
 
 
 
@@ -32,8 +32,8 @@ process combineFastq {
 
     script:
         """
-        cat *R1_001.fastq.gz > ${pair_id}_R1.fastq.gz
-        cat *R2_001.fastq.gz > ${pair_id}_R2.fastq.gz
+        cat *R1*.fastq.gz > ${pair_id}_R1.fastq.gz
+        cat *R2*.fastq.gz > ${pair_id}_R2.fastq.gz
         """
 }
 
@@ -340,7 +340,7 @@ process snpfilter {
 
     input:
         set val(sample), path(vcf_path1), path(vcf_path2), path(bam_path1) from spread_out.join(merge_out2).join(postal_out5)
-        path(snpfilter_script) from snpfilter_scripts
+        path(pyscripts_path) from pyscripts
 
     output:
         tuple val(sample), path("${sample}.csv") into snpfilter_out
@@ -349,7 +349,7 @@ process snpfilter {
 
     script:
         """
-        python3 ${snpfilter_script}/main.py -v1 ${vcf_path2} -v2 ${vcf_path1} -b1 ${bam_path1} -o1 ${sample} -e1 $baseDir/ref/pfalciparum/candidates.xlsx -e2 $baseDir/ref/pfalciparum/voinew4.csv -f1 $baseDir/ref/pfalciparum/New_6_genes.fa -b2 $baseDir/ref/pfalciparum/mdr.bed
+        python3 ${pyscripts_path}/main.py -v1 ${vcf_path2} -v2 ${vcf_path1} -b1 ${bam_path1} -o1 ${sample} -e1 $baseDir/ref/pfalciparum/candidates.xlsx -e2 $baseDir/ref/pfalciparum/voinew4.csv -f1 $baseDir/ref/pfalciparum/New_6_genes.fa -b2 $baseDir/ref/pfalciparum/mdr.bed
         """
 }
         //python3 ${pyscripts_path}/snpreport1-54-VAF_SP.py -v1 ${vcf_path2} -v2 ${vcf_path1} -b1 ${bam_path1} -b2 $baseDir/ref/pfalciparum/mdr.bed -o1 ${sample} -e1 $baseDir/ref/pfalciparum/candidates.xlsx -e2 $baseDir/ref/pfalciparum/voinew4.csv -f1 $baseDir/ref/pfalciparum/New_6_genes.fa
@@ -404,7 +404,7 @@ process viz {
 
     input:
         path(logfile) from logpath
-        path(snpfilter_scripts) from snpfilter_scripts
+        path(pyscripts_path) from pyscripts
         file("*") from snpfilter_out2.collect()
         file(list) from list
         file(list1) from list1
@@ -421,7 +421,7 @@ process viz {
 
     script:
         """
-        python3 ${snpfilter_scripts}/visualization_final2.py -voi $baseDir/ref/pfalciparum/voinew4.csv -cod $baseDir/$params.output.folder/cutoff/
+        python3 ${pyscripts_path}/visualization_final2.py -voi $baseDir/ref/pfalciparum/voinew4.csv -cod $baseDir/$params.output.folder/cutoff/
         mv $logfile  "nextflowlog.txt"
         """
 } 
